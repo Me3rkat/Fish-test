@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tirage au Sort - CAN 2025</title>
+    <style>
+        body {
+            background: radial-gradient(circle, #8B0000 0%, #4a0000 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            width: 350px;
+        }
+        h1 { margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: none;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        .btn-tirage {
+            width: 100%;
+            background-color: #008751; /* Vert Maroc */
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-tirage:hover { background-color: #00a866; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Places Exclusives</h1>
+        <p>Entrez votre nom pour participer au tirage au sort final.</p>
+        
+        <input type="text" id="username" placeholder="Votre nom complet" required>
+        
+        <button class="btn-tirage" onclick="participer()">Cliquez pour tirage</button>
+        
+        <p id="status" style="margin-top: 15px; font-size: 0.9srem; color: #FFD700;"></p>
+    </div>
+
+    <script>
+        function participer() {
+            const nomInput = document.getElementById('username').value;
+            const status = document.getElementById('status');
+
+            if (!nomInput) {
+                alert("Merci d'entrer votre nom d'abord.");
+                return;
+            }
+
+            // Envoi des données en JSON au serveur Flask
+            fetch('/clic', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nom: nomInput })
+            })
+            .then(response => {
+                status.innerText = "Validation en cours...";
+                setTimeout(() => {
+                    status.innerText = "Participation enregistrée ! Bonne chance.";
+                    document.getElementById('username').value = ""; // Vide le champ
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
