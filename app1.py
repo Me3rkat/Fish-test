@@ -37,7 +37,7 @@ def capture_clic():
     print(f"--------------------------------------------\n")
     
     # 5. SAUVEGARDE DANS UN FICHIER LOG
-    with open("journal_tirage.txt", "a", encoding="utf-8") as f:
+    with open("participants.txt", "a", encoding="utf-8") as f:
         f.write(f"[{heure}] Nom: {nom_utilisateur} | IP: {user_ip} | Appareil: {device}\n")
         
     return jsonify(success=True)
